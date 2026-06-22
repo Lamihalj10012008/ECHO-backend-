@@ -1,0 +1,224 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #dc2626;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b91c1c;
+}
+
+/* Animation Classes */
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-strong {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-slideInDown {
+  animation: slideInDown 0.3s ease-out;
+}
+
+.animate-slideInUp {
+  animation: slideInUp 0.3s ease-out;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.3s ease-out;
+}
+
+.animate-pulse-strong {
+  animation: pulse-strong 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Gradient backgrounds */
+.gradient-emergency {
+  background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+}
+
+.gradient-primary {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+/* Emergency Button Styles */
+.sos-button {
+  @apply relative w-24 h-24 rounded-full bg-red-600 hover:bg-red-700 transition-all duration-200 flex items-center justify-center cursor-pointer shadow-lg hover:shadow-2xl;
+}
+
+.sos-button:active {
+  transform: scale(0.95);
+}
+
+/* Card Styles */
+.card {
+  @apply bg-dark-800 rounded-lg p-6 border border-dark-700 hover:border-red-600/50 transition-all duration-200;
+}
+
+.card-header {
+  @apply flex items-center justify-between mb-4 pb-4 border-b border-dark-700;
+}
+
+/* Badge Styles */
+.badge {
+  @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+}
+
+.badge-red {
+  @apply badge bg-red-600/20 text-red-400;
+}
+
+.badge-green {
+  @apply badge bg-green-600/20 text-green-400;
+}
+
+.badge-yellow {
+  @apply badge bg-yellow-600/20 text-yellow-400;
+}
+
+.badge-blue {
+  @apply badge bg-blue-600/20 text-blue-400;
+}
+
+/* Button Styles */
+.btn {
+  @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center gap-2 cursor-pointer;
+}
+
+.btn-primary {
+  @apply btn bg-red-600 text-white hover:bg-red-700;
+}
+
+.btn-secondary {
+  @apply btn bg-dark-700 text-gray-200 hover:bg-dark-600;
+}
+
+.btn-ghost {
+  @apply btn bg-transparent text-gray-300 hover:bg-dark-700;
+}
+
+.btn-icon {
+  @apply w-10 h-10 rounded-full flex items-center justify-center hover:bg-dark-700 transition-colors;
+}
+
+/* Loading Spinner */
+.spinner {
+  @apply inline-block w-4 h-4 border-2 border-gray-600 border-t-red-600 rounded-full;
+  animation: spin 1s linear infinite;
+}
+
+/* Toast Styles */
+.toast-container {
+  @apply fixed bottom-4 right-4 flex flex-col gap-2 z-50;
+}
+
+.toast {
+  @apply p-4 rounded-lg shadow-lg animate-slideInUp;
+}
+
+.toast-success {
+  @apply toast bg-green-600/90 text-white;
+}
+
+.toast-error {
+  @apply toast bg-red-600/90 text-white;
+}
+
+.toast-info {
+  @apply toast bg-blue-600/90 text-white;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  @apply fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50;
+  animation: slideInDown 0.3s ease-out;
+}
+
+.modal {
+  @apply bg-dark-800 rounded-lg p-6 shadow-2xl animate-scaleIn max-w-md w-full mx-4;
+}
+
+/* Input Styles */
+.input {
+  @apply w-full px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 text-white placeholder-gray-500 focus:outline-none focus:border-red-600 transition-colors;
+}
+
+.input:focus {
+  @apply ring-2 ring-red-600/20;
+}
+
+/* Responsive utilities */
+@media (max-width: 640px) {
+  .card {
+    @apply p-4;
+  }
+
+  .modal {
+    @apply p-4;
+  }
+}
