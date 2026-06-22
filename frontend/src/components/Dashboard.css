@@ -1,0 +1,223 @@
+:root {
+  --primary-gradient: linear-gradient(135deg, #2b4eff, #613fff);
+  --bg-color: #eef2f8;
+  --card-bg: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border-radius: 12px;
+}
+
+body {
+  background-color: var(--bg-color);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.echo-dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  color: var(--text-main);
+}
+
+/* Welcome Banner */
+.welcome-banner {
+  background: var(--primary-gradient);
+  color: #ffffff;
+  padding: 32px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 15px rgba(43, 78, 255, 0.2);
+  margin-bottom: 24px;
+}
+
+.welcome-banner h1 {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.welcome-banner p {
+  margin: 0 0 24px 0;
+  font-size: 15px;
+  opacity: 0.9;
+}
+
+.banner-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-get-started, .btn-learn-more {
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-get-started {
+  background-color: #ffffff;
+  color: #2b4eff;
+}
+
+.btn-learn-more {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.btn-get-started:hover, .btn-learn-more:hover {
+  opacity: 0.9;
+}
+
+/* Metrics Grid */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.metric-card {
+  background-color: var(--card-bg);
+  padding: 20px;
+  border-radius: var(--border-radius);
+  box-shadow: none;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+.metric-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.metric-title {
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.metric-change {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.metric-change.positive, .metric-change.positive-green {
+  color: #10b981;
+  background-color: rgba(16,185,129,0.12);
+}
+
+.metric-value {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+/* Headings */
+.section-heading {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 24px 0 16px 0;
+}
+
+/* Campus Services Grid */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.service-card {
+  background-color: var(--card-bg);
+  padding: 24px;
+  border-radius: var(--border-radius);
+  box-shadow: none;
+  border: 1px solid rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.service-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.service-icon-wrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.service-icon {
+  color: #ffffff;
+  font-size: 18px;
+}
+
+.service-card h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.service-card p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Quick Actions Section */
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.action-card {
+  background-color: var(--card-bg);
+  padding: 16px;
+  border-radius: var(--border-radius);
+  box-shadow: none;
+  border: 1px solid rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+}
+
+.action-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  background-color: rgba(0,0,0,0.05);
+}
+
+.action-card h4 {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.action-card p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+/* Quick color classes for utility icons */
+.blue-text   { color: #4f8ef7; background-color: rgba(79,142,247,0.12); }
+.purple-text { color: #a855f7; background-color: rgba(168,85,247,0.12); }
+.green-text  { color: #10b981; background-color: rgba(16,185,129,0.12); }
