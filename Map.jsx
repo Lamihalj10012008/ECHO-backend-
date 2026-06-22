@@ -4,6 +4,7 @@ import axios from 'axios';
 
 const mapContainerStyle = { width: '100vw', height: '70vh', borderRadius: '8px' };
 const karunyaCenter = { lat: 10.9355, lng: 76.7432 }; // Default campus focal point
+const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY;
 
 const localFallbackFeatures = [
   {
@@ -334,7 +335,7 @@ export default function App() {
         </div>
       )}
 
-      <LoadScript googleMapsApiKey="AIzaSyD49NX6m6TyeWs7eIZbr7YQeoikDtTrm9c">
+      <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY}>
         <GoogleMap 
           mapContainerStyle={mapContainerStyle} 
           center={userLocation || karunyaCenter} 

@@ -6,7 +6,10 @@ import BuildingMarker from './BuildingMarker';
 import RouteOverlay from './RouteOverlay';
 import CrowdHeatmap, { CrowdLegend } from './CrowdHeatmap';
 
-const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY || 'AIzaSyD49NX6m6TyeWs7eIZbr7YQeoikDtTrm9c';
+const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY;
+if (!GOOGLE_MAPS_API_KEY) {
+  console.warn("VITE_GOOGLE_MAPS_KEY is missing from environment variables!");
+}
 const LIBRARIES = ['places', 'visualization'];
 
 const KARUNYA_CENTER = { lat: 10.9355, lng: 76.7432 };
