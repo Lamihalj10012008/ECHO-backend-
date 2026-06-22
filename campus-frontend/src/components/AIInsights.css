@@ -1,0 +1,52 @@
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 20px;
+}
+.insight-card { padding: 24px; animation: fadeInUp 0.5s ease-out both; }
+.insight-card h3 {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 16px; font-weight: 600; color: var(--echo-text); margin: 0 0 16px;
+}
+.insight-wide { grid-column: 1 / -1; }
+
+/* Factor bars */
+.factor-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.factor-label { width: 100px; font-size: 13px; color: var(--echo-text-secondary); }
+.factor-track { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+.factor-fill { height: 100%; border-radius: 3px; animation: growWidth 0.8s ease-out both; }
+.factor-pct { font-size: 12px; font-weight: 600; color: var(--echo-text-muted); width: 30px; text-align: right; }
+
+/* Predictions */
+.prediction-list { display: flex; flex-direction: column; gap: 10px; }
+.prediction-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; border-left: 3px solid; border-radius: 0 6px 6px 0;
+  background: rgba(255,255,255,0.02); font-size: 14px; color: var(--echo-text-secondary);
+}
+.pred-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* Weather */
+.weather-current { font-size: 24px; font-weight: 700; color: var(--echo-text); margin: 0 0 8px; }
+.weather-text { font-size: 14px; color: var(--echo-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+.weather-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+.weather-badge {
+  padding: 6px 14px; border-radius: var(--echo-radius-full);
+  background: var(--echo-glass); border: 1px solid var(--echo-glass-border);
+  font-size: 13px; color: var(--echo-text-secondary);
+}
+
+/* Best times */
+.time-list { display: flex; flex-direction: column; gap: 10px; }
+.time-row { display: flex; gap: 12px; font-size: 14px; align-items: baseline; }
+.time-cat { font-weight: 600; white-space: nowrap; }
+.time-val { color: var(--echo-text-secondary); }
+
+/* Hidden gems */
+.gems-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.gem-card { padding: 16px; }
+.gem-card h4 { font-size: 15px; font-weight: 600; color: var(--echo-text); margin: 0 0 6px; }
+.gem-stat { font-size: 13px; color: #f59e0b; margin: 0 0 4px; }
+.gem-perfect { font-size: 13px; color: var(--echo-text-muted); margin: 0; font-style: italic; }
+
+@media (max-width: 768px) { .insights-grid { grid-template-columns: 1fr; } }

@@ -1,0 +1,5 @@
+/* Global app wrapper — styles moved to component CSS files */
+.echo-app {
+  min-height: 100vh;
+  background: var(--echo-bg);
+}

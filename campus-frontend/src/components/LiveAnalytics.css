@@ -1,0 +1,46 @@
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 20px;
+}
+.chart-card {
+  padding: 24px;
+  animation: fadeInUp 0.5s ease-out both;
+}
+.chart-card h3 {
+  font-size: 16px; font-weight: 600; color: var(--echo-text); margin: 0 0 4px;
+}
+.chart-desc {
+  font-size: 13px; color: var(--echo-text-muted); margin: 0 0 16px;
+}
+.chart-wide { grid-column: 1 / -1; }
+.live-indicator {
+  display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--echo-accent); animation: pulse 2s infinite; margin-left: 8px;
+}
+.glass-tooltip {
+  background: rgba(15,23,42,0.95); backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+  padding: 8px 12px; font-size: 13px; color: var(--echo-text);
+}
+.glass-tooltip p { margin: 0; }
+
+/* Heat grid */
+.heat-grid { display: flex; gap: 8px; margin-top: 8px; }
+.heat-labels-y { display: flex; flex-direction: column; gap: 4px; padding-top: 24px; }
+.heat-labels-y span { font-size: 11px; color: var(--echo-text-muted); height: 28px; display: flex; align-items: center; }
+.heat-body { flex: 1; }
+.heat-labels-x { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-bottom: 4px; }
+.heat-labels-x span { font-size: 10px; color: var(--echo-text-muted); text-align: center; }
+.heat-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-bottom: 4px; }
+.heat-cell {
+  height: 28px; border-radius: 4px; transition: var(--echo-transition); cursor: default;
+}
+.heat-cell:hover { transform: scale(1.1); }
+
+/* Recharts overrides */
+.recharts-default-tooltip { background: rgba(15,23,42,0.95) !important; border: 1px solid rgba(255,255,255,0.1) !important; border-radius: 8px !important; }
+
+@media (max-width: 768px) {
+  .analytics-grid { grid-template-columns: 1fr; }
+}

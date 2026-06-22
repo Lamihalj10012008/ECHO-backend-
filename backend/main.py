@@ -1,121 +1,145 @@
-import re
-from fastapi import FastAPI, status, HTTPException, Depends
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field
 import uvicorn
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
-from sqlalchemy import create_engine, Column, Integer, String
-from sqlalchemy.orm import declarative_base, sessionmaker, Session
+from backend.app.database import engine, Base, SessionLocal
+from backend.app.models import Role, Permission, User, PasswordHistory
+from backend.app.security import hash_password
+from backend.app.middleware import SecurityHeadersMiddleware, RateLimitingMiddleware, CsrfProtectionMiddleware
+from backend.app.config import settings
 
-# --- DATABASE ENGINE SETUP ---
-DATABASE_URL = "sqlite:///./echo_campus.db"
-engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
+# --- API ROUTERS ---
+from backend.app.routes.auth import router as auth_router
+from backend.app.routes.mfa import router as mfa_router
+from backend.app.routes.sessions import router as sessions_router
+from backend.app.routes.admin import router as admin_router
+from backend.app.routes.users import router as users_router
 
-# --- DATABASE TABLE MODEL ---
-class UserModel(Base):
-    __tablename__ = "users"
-    
-    id = Column(Integer, primary_key=True, index=True)
-    username = Column(String, unique=True, index=True, nullable=False)
-    password = Column(String, nullable=False)  # Note: For production, hash passwords using bcrypt!
-    role = Column(String, nullable=False)
-
-# Ensure database tables are initialized
+# Ensure tables are created
 Base.metadata.create_all(bind=engine)
 
-# --- APP LIFESPAN HANDLING (DATA SEEDING) ---
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    """Lifecycle handler to seed Roles, Permissions, and default accounts on startup."""
     db = SessionLocal()
     try:
-        # Check if the database table is completely empty
-        if db.query(UserModel).count() == 0:
-            demo_users = [
-                UserModel(username="URK25CS7001", password="student123", role="Student"),
-                UserModel(username="URK25CS7002", password="faculty123", role="Faculty"),
-                UserModel(username="URK25CS7003", password="admin123", role="Administrator")
-            ]
-            db.add_all(demo_users)
+        # 1. Seed Permissions
+        permissions_data = [
+            ("view_dashboard", "Access to campus governance dashboard"),
+            ("view_sessions", "View active logins"),
+            ("revoke_session", "Invalidate active login sessions"),
+            ("edit_grades", "Modify student grades and submissions"),
+            ("view_audit_logs", "View administrative audit trails"),
+            ("manage_users", "Deactivate/Activate users"),
+            ("lock_user", "Manually lockout security threats"),
+            ("unlock_user", "Manually restore account access")
+        ]
+        
+        db_permissions = {}
+        for p_name, p_desc in permissions_data:
+            perm = db.query(Permission).filter(Permission.name == p_name).first()
+            if not perm:
+                perm = Permission(name=p_name, description=p_desc)
+                db.add(perm)
+                db.commit()
+                db.refresh(perm)
+            db_permissions[p_name] = perm
+            
+        # 2. Seed Roles and map permissions
+        roles_data = {
+            "Student": ["view_dashboard", "view_sessions", "revoke_session"],
+            "Faculty": ["view_dashboard", "view_sessions", "revoke_session", "edit_grades"],
+            "Administrator": ["view_dashboard", "view_sessions", "revoke_session", "view_audit_logs", "manage_users", "lock_user", "unlock_user"]
+        }
+        
+        db_roles = {}
+        for r_name, p_list in roles_data.items():
+            role = db.query(Role).filter(Role.name == r_name).first()
+            if not role:
+                role = Role(name=r_name, description=f"{r_name} role permissions")
+                db.add(role)
+                db.commit()
+                db.refresh(role)
+                
+            # Sync permissions to role
+            role.permissions = [db_permissions[p] for p in p_list]
             db.commit()
-            print("Successfully initialized database and seeded default format accounts!")
+            db_roles[r_name] = role
+
+        # 3. Seed Default Accounts (with strong passwords!)
+        demo_accounts = [
+            ("URK25CS7001", "StudentPassword123!", "Student", "Alice Student", "cs_student@university.edu", "+1555010001", "Computer Science"),
+            ("URK25CS7002", "FacultyPassword123!", "Faculty", "Bob Professor", "cs_faculty@university.edu", "+1555010002", "Computer Science"),
+            ("URK25CS7003", "AdminPassword123!", "Administrator", "Charlie Admin", "admin@university.edu", "+1555010003", "IT Operations")
+        ]
+        
+        for username, password, role_name, full_name, email, mobile, dept in demo_accounts:
+            existing_user = db.query(User).filter(User.username == username).first()
+            if not existing_user:
+                pwd_hash = hash_password(password)
+                new_user = User(
+                    username=username,
+                    full_name=full_name,
+                    email=email,
+                    mobile_number=mobile,
+                    department=dept,
+                    password_hash=pwd_hash,
+                    role_id=db_roles[role_name].id,
+                    is_active=True,
+                    is_verified=True, # Pre-verified for testing
+                    mfa_enabled=False
+                )
+                db.add(new_user)
+                db.commit()
+                db.refresh(new_user)
+                
+                # Also seed password history
+                history_entry = PasswordHistory(
+                    user_id=new_user.id,
+                    password_hash=pwd_hash
+                )
+                db.add(history_entry)
+                db.commit()
+                
+        print("Successfully initialized database schemas, roles, permissions, and seeded default accounts!")
+    except Exception as e:
+        print(f"Error seeding database: {e}")
     finally:
         db.close()
     yield
 
-# --- API CORE SETUP ---
-app = FastAPI(title="ECHO Smart Campus Governance API", lifespan=lifespan)
+# --- APP SETUP ---
+app = FastAPI(
+    title=settings.PROJECT_NAME,
+    version="1.0.0",
+    lifespan=lifespan
+)
 
+# --- SECURITY MIDDLEWARE PIPELINE ---
+# 1. Custom Security Headers (Clickjacking, MIME, CSP, HSTS)
+app.add_middleware(SecurityHeadersMiddleware)
+
+# 2. Rate Limiting Middleware (IP based brute-force protection)
+app.add_middleware(RateLimitingMiddleware)
+
+# 3. CSRF Protection Middleware (Origin and Referer checking)
+app.add_middleware(CsrfProtectionMiddleware)
+
+# 4. CORS Middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=settings.ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# --- SCHEMAS ---
-class AuthRequest(BaseModel):
-    username: str
-    password: str
-    role: str
-
-# Dependency to fetch database session per request
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-# --- REGISTRATION ROUTE ---
-@app.post("/api/register", status_code=status.HTTP_201_CREATED)
-async def register(data: AuthRequest, db: Session = Depends(get_db)):
-    # Regex breakdown for 'URK25CS7036': 
-    # 3 uppercase letters, 2 digits, 2 uppercase letters, 4 digits
-    REG_NUMBER_PATTERN = r"^[A-Z]{3}\d{2}[A-Z]{2}\d{4}$"
-    
-    if not re.match(REG_NUMBER_PATTERN, data.username):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Invalid format. Username must be a standard registration number (e.g., URK25CS7036)."
-        )
-    
-    # Check if registration number already exists in DB
-    existing_user = db.query(UserModel).filter(UserModel.username == data.username).first()
-    if existing_user:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="This registration number is already registered."
-        )
-    
-    # Dynamically inject new user into SQLite database
-    new_user = UserModel(username=data.username, password=data.password, role=data.role)
-    db.add(new_user)
-    db.commit()
-    
-    return {
-        "success": True,
-        "message": "Registration successful! You can now log in with your credentials."
-    }
-
-# --- DYNAMIC AUTHENTICATION ROUTE ---
-@app.post("/api/login")
-async def login(data: AuthRequest, db: Session = Depends(get_db)):
-    user = db.query(UserModel).filter(UserModel.username == data.username).first()
-
-    # Cross-check submitted info against dynamic database records
-    if user and user.password == data.password and user.role == data.role:
-        return {
-            "success": True,
-            "message": f"Welcome {user.username}! Login Successful as {user.role}."
-        }
-    
-    raise HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Invalid Username, Password, or Role mapping."
-    )
+# --- ROUTER REGISTER ---
+app.include_router(auth_router)
+app.include_router(mfa_router)
+app.include_router(sessions_router)
+app.include_router(admin_router)
+app.include_router(users_router)
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8001)
+    uvicorn.run("backend.main:app", host="127.0.0.1", port=8001, reload=True)

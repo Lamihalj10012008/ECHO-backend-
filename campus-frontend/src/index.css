@@ -1,0 +1,176 @@
+/* ============================================================================
+   ECHO AI Smart Campus — Design System
+   Dark theme with glassmorphism, Inter typography, smooth animations
+   ============================================================================ */
+
+:root {
+  --echo-bg: #0a1628;
+  --echo-bg-secondary: #0f172a;
+  --echo-surface: rgba(15, 23, 42, 0.8);
+  --echo-glass: rgba(255, 255, 255, 0.05);
+  --echo-glass-border: rgba(255, 255, 255, 0.1);
+  --echo-glass-hover: rgba(255, 255, 255, 0.08);
+  --echo-primary: #3b82f6;
+  --echo-primary-glow: rgba(59, 130, 246, 0.3);
+  --echo-secondary: #8b5cf6;
+  --echo-accent: #10b981;
+  --echo-warning: #f59e0b;
+  --echo-error: #ef4444;
+  --echo-text: #f1f5f9;
+  --echo-text-secondary: #94a3b8;
+  --echo-text-muted: #64748b;
+  --echo-gradient: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  --echo-gradient-accent: linear-gradient(135deg, #10b981, #3b82f6);
+  --echo-radius: 16px;
+  --echo-radius-sm: 8px;
+  --echo-radius-lg: 24px;
+  --echo-radius-full: 9999px;
+  --echo-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --echo-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.4);
+  --echo-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --echo-font: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--echo-font);
+  background: var(--echo-bg);
+  color: var(--echo-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--echo-bg-secondary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--echo-text-muted);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--echo-text-secondary);
+}
+
+/* ===== Utility Classes ===== */
+.glass-card {
+  background: var(--echo-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--echo-glass-border);
+  border-radius: var(--echo-radius);
+  transition: var(--echo-transition);
+}
+
+.glass-card:hover {
+  background: var(--echo-glass-hover);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.section-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 60px 24px;
+}
+
+.section-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--echo-text);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.section-subtitle {
+  font-size: 16px;
+  color: var(--echo-text-secondary);
+  margin-bottom: 32px;
+}
+
+/* ===== Keyframe Animations ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 5px var(--echo-accent), 0 0 10px var(--echo-accent);
+  }
+  50% {
+    box-shadow: 0 0 15px var(--echo-accent), 0 0 30px var(--echo-accent);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.1); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes growWidth {
+  from { width: 0; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .section-container {
+    padding: 40px 16px;
+  }
+  .section-title {
+    font-size: 24px;
+  }
+}
