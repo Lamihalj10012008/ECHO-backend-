@@ -1,0 +1,49 @@
+.profile-page{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:50px;
+}
+
+.profile-card{
+    width:420px;
+    background:white;
+    border-radius:20px;
+    padding:40px;
+    text-align:center;
+    box-shadow:0 15px 40px rgba(0,0,0,.15);
+}
+
+.profile-avatar{
+    width:110px;
+    height:110px;
+    margin:auto;
+    border-radius:50%;
+    background:#2563eb;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:42px;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
+.profile-card h2{
+    color:#1e293b;
+    margin-bottom:10px;
+}
+
+.profile-card p{
+    color:#64748b;
+    margin-bottom:20px;
+}
+
+.role{
+    display:inline-block;
+    background:#2563eb;
+    color:white;
+    padding:8px 18px;
+    border-radius:20px;
+    font-weight:600;
+}

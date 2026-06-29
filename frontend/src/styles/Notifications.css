@@ -1,0 +1,23 @@
+.notifications-page h1 {
+  color: white;
+  margin-bottom: 30px;
+}
+
+.notification-card {
+  background: white;
+  color: #1e293b;
+  padding: 22px;
+  border-radius: 15px;
+  margin-bottom: 18px;
+  box-shadow: 0 8px 20px rgba(0,0,0,.12);
+}
+
+.notification-card h3 {
+  margin: 0 0 8px;
+  color: #1e293b;
+}
+
+.notification-card p {
+  margin: 0;
+  color: #64748b;
+}

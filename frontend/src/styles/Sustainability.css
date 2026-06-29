@@ -1,0 +1,282 @@
+.sustainability-page {
+    padding: 30px;
+    background: #f8fafc;
+    min-height: 100vh;
+}
+
+/* ---------- Header ---------- */
+
+.sustainability-page h1 {
+    color: #1e293b;
+    margin-bottom: 25px;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+/* ---------- Form ---------- */
+
+.sustainability-form {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0,0,0,.08);
+    margin-bottom: 30px;
+}
+
+.sustainability-form h2 {
+    color: #1e293b;
+    margin-bottom: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+    gap: 18px;
+    margin-bottom: 20px;
+}
+
+.form-grid input {
+    padding: 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 15px;
+    outline: none;
+    transition: .3s;
+}
+
+.form-grid input:focus {
+    border-color: #16a34a;
+    box-shadow: 0 0 0 3px rgba(22,163,74,.15);
+}
+
+.sustainability-form textarea {
+    width: 100%;
+    min-height: 100px;
+    resize: vertical;
+    padding: 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.sustainability-form textarea:focus {
+    border-color: #16a34a;
+    box-shadow: 0 0 0 3px rgba(22,163,74,.15);
+}
+
+.sustainability-form button {
+    background: #16a34a;
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.sustainability-form button:hover {
+    background: #15803d;
+}
+
+/* ---------- KPI Cards ---------- */
+
+.sustainability-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+    gap: 24px;
+    margin-bottom: 35px;
+}
+
+.sustainability-card {
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0,0,0,.08);
+    transition: .3s;
+}
+
+.sustainability-card:hover {
+    transform: translateY(-5px);
+}
+
+.sustainability-card h3 {
+    color: #64748b;
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+.sustainability-card h2 {
+    color: #16a34a;
+    font-size: 34px;
+    margin: 0;
+}
+
+/* ---------- Table ---------- */
+
+.sustainability-table {
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0,0,0,.08);
+    overflow-x: auto;
+}
+
+.sustainability-table h2 {
+    color: #1e293b;
+    margin-bottom: 20px;
+}
+
+.sustainability-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.sustainability-table th {
+    background: #1e293b;
+    color: white;
+    padding: 14px;
+    text-align: left;
+}
+
+.sustainability-table td {
+    padding: 14px;
+    border-bottom: 1px solid #e5e7eb;
+    color: #334155;
+}
+
+.sustainability-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 768px) {
+
+    .sustainability-page {
+        padding: 20px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sustainability-card h2 {
+        font-size: 28px;
+    }
+
+}
+/* AI Advisor */
+
+.ai-insights{
+    background:#fff;
+    margin:30px 0;
+    padding:25px;
+    border-radius:16px;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+}
+
+.ai-insights h2{
+    color:#1e293b;
+    margin-bottom:20px;
+}
+
+.insight{
+    padding:16px 20px;
+    border-radius:10px;
+    margin-bottom:15px;
+    font-weight:500;
+}
+
+.success{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.warning{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.info{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+/* Green Campus Goals */
+
+.green-goals {
+    background: #ffffff;
+    margin: 30px 0;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0,0,0,.08);
+}
+
+.green-goals h2 {
+    margin-bottom: 20px;
+    color: #1e293b;
+}
+
+.goal {
+    margin-bottom: 22px;
+}
+
+.goal-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #334155;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    background: #e5e7eb;
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    border-radius: 30px;
+}
+
+.electricity {
+    width: 82%;
+    background: #16a34a;
+}
+
+.water {
+    width: 74%;
+    background: #0ea5e9;
+}
+
+.carbon {
+    width: 90%;
+    background: #22c55e;
+}
+
+.waste {
+    width: 65%;
+    background: #f59e0b;
+}
+.export-btn{
+    background:#2563eb;
+    color:#fff;
+    border:none;
+    padding:14px 22px;
+    border-radius:10px;
+    cursor:pointer;
+    margin-left:15px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.export-btn:hover{
+    background:#1d4ed8;
+}

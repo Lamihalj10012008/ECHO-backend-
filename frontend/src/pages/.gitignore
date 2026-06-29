@@ -1,0 +1,28 @@
+# React
+frontend/node_modules/
+
+# Root node_modules
+node_modules/
+
+# Python Virtual Environment
+backend/venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# SQLite Database
+backend/echo.db
+
+# Environment Variables
+.env
+
+# VS Code
+.vscode/
+
+# Build folders
+dist/
+build/
+
+# Logs
+*.log
