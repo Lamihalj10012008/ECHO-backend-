@@ -12,9 +12,20 @@ const EmergencyTimeline = ({ timeline, currentStatus }) => {
     return labels[status] || status
   }
 
-  const getStatusColor = (status) => {
+  const getStatusColor = (status, icon) => {
+    const iconColors = {
+      '🚨': 'bg-yellow-600',
+      '👮': 'bg-blue-600',
+      '🚗': 'bg-orange-600',
+      '✅': 'bg-green-600',
+      '✔️': 'bg-green-700',
+      '⚡': 'bg-red-600',
+      '📌': 'bg-gray-600'
+    }
+    if (icon && iconColors[icon]) return iconColors[icon]
     const colors = {
       'created': 'bg-yellow-600',
+      'active': 'bg-yellow-600',
       'security_assigned': 'bg-blue-600',
       'help_on_way': 'bg-orange-600',
       'arrived': 'bg-green-600',
@@ -45,7 +56,7 @@ const EmergencyTimeline = ({ timeline, currentStatus }) => {
               <div key={index} className="flex gap-4">
                 {/* Timeline dot */}
                 <div className="flex flex-col items-center">
-                  <div className={`w-12 h-12 ${getStatusColor(event.status)} rounded-full flex items-center justify-center text-white font-bold text-lg`}>
+                  <div className={`w-12 h-12 ${getStatusColor(event.status, event.icon)} rounded-full flex items-center justify-center text-white font-bold text-lg`}>
                     {event.icon || index + 1}
                   </div>
                   {index < timeline.length - 1 && (

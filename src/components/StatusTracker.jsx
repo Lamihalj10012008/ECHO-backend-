@@ -10,8 +10,11 @@ const StatusTracker = ({ alert }) => {
     { id: 'resolved', label: 'Resolved', icon: '🎯' },
   ]
 
+  const STATUS_ALIAS = { active: 'created', triggered: 'created' }
+
   const getStatusIndex = () => {
-    return statuses.findIndex(s => s.id === alert.status)
+    const resolvedStatus = STATUS_ALIAS[alert.status] || alert.status
+    return statuses.findIndex(s => s.id === resolvedStatus)
   }
 
   const currentIndex = getStatusIndex()
@@ -63,7 +66,7 @@ const StatusTracker = ({ alert }) => {
           <span>Current Status</span>
         </div>
         <p className="text-gray-300 mt-2">
-          {statuses[currentIndex]?.label || 'Unknown Status'}
+          {statuses[currentIndex]?.label || (alert.status === 'active' ? 'Alert Created' : 'Unknown Status')}
         </p>
       </div>
     </div>

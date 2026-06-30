@@ -659,15 +659,17 @@ class NotificationSendRequest(BaseModel):
 async def send_manual_notification(
     payload: NotificationSendRequest,
     background_tasks: BackgroundTasks,
-    current_user: User = Depends(get_current_security_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """
-    Manually retries/triggers a notification dispatch (security/admin only).
+    Manually retries/triggers a notification dispatch. Students can retry for their own alerts.
     """
     alert = db.query(SOSAlert).filter(SOSAlert.id == payload.sos_id).first()
     if not alert:
         raise HTTPException(status_code=404, detail="Reference SOS Alert not found.")
+    if alert.user_id != current_user.id and current_user.role.value not in ["security", "admin"]:
+        raise HTTPException(status_code=403, detail="Not authorized to send notifications for this alert.")
 
     normalized_phone = validate_and_normalize_phone(payload.recipient)
 

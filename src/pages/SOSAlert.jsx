@@ -30,15 +30,23 @@ const SOSAlert = () => {
     }, 3000)
   }
 
+  const adaptContact = (c) => ({
+    id: c.id,
+    name: c.contact_name || c.name || 'Contact',
+    phone: c.phone_number || c.phone || '',
+    whatsapp: c.phone_number || c.phone || '',
+    icon: c.relationship === 'Parent' ? '👨‍👩‍👧' : c.relationship === 'Guardian' ? '👴' : '🏠'
+  })
+
   const handleCall = (contact) => {
-    const phoneNumber = contact.phone.replace(/[^0-9+]/g, '')
-    window.location.href = `tel:${phoneNumber}`
+    const phoneNumber = (contact.phone || contact.phone_number || '').replace(/[^0-9+]/g, '')
+    if (phoneNumber) window.location.href = `tel:${phoneNumber}`
   }
 
   const handleWhatsApp = (contact) => {
-    const phoneNumber = contact.whatsapp.replace(/[^0-9+]/g, '')
+    const phoneNumber = (contact.whatsapp || contact.phone || contact.phone_number || '').replace(/[^0-9+]/g, '')
     const message = encodeURIComponent('Emergency! I need immediate help!')
-    window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank')
+    if (phoneNumber) window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank')
   }
 
   return (
@@ -71,7 +79,7 @@ const SOSAlert = () => {
               {emergencyContacts.map(contact => (
                 <ContactCard
                   key={contact.id}
-                  contact={contact}
+                  contact={adaptContact(contact)}
                   onCall={handleCall}
                   onWhatsApp={handleWhatsApp}
                 />

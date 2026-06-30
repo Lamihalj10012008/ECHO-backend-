@@ -15,6 +15,7 @@ axios.interceptors.response.use(
       localStorage.removeItem('userRole');
       localStorage.removeItem('userName');
       localStorage.removeItem('userEmail');
+      localStorage.removeItem('userRegisterNo');
       window.location.reload();
     }
     return Promise.reject(error);

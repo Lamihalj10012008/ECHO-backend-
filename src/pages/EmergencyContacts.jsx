@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { FaEdit, FaSave, FaTimes, FaTrash, FaUserPlus, FaPhone, FaWhatsapp, FaShieldAlt } from 'react-icons/fa'
+import { FaEdit, FaSave, FaTimes, FaTrash, FaUserPlus, FaPhone, FaWhatsapp, FaShieldAlt, FaSpinner } from 'react-icons/fa'
 import { useAlert } from '../context/AlertContext'
 import { toast } from 'react-toastify'
 import ContactCard from '../components/ContactCard'

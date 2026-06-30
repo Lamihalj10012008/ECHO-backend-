@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
-import { FaLock, FaEnvelope, FaSignInAlt, FaUserGraduate, FaUserShield, FaUserPlus, FaUser, FaPhone } from 'react-icons/fa'
+import { FaLock, FaEnvelope, FaSignInAlt, FaUserGraduate, FaUserShield, FaUserPlus, FaUser, FaPhone, FaIdCard } from 'react-icons/fa'
+
+const REG_NO_PATTERN = /^[A-Za-z0-9]{4,20}$/
 
 const Login = ({ setToken }) => {
   const [email, setEmail] = useState('')
@@ -11,15 +13,26 @@ const Login = ({ setToken }) => {
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [role, setRole] = useState('student')
+  const [registerNo, setRegisterNo] = useState('')
 
-  const handleLogin = async (e, customEmail = null, customPassword = null) => {
+  const handleLogin = async (e, customEmail = null, customPassword = null, customRegNo = null) => {
     if (e) e.preventDefault()
-    
+
     const loginEmail = customEmail || email
     const loginPassword = customPassword || password
+    const loginRegNo = customRegNo || registerNo
 
     if (!loginEmail || !loginPassword) {
       toast.error('Please fill in all fields')
+      return
+    }
+
+    if (!loginRegNo) {
+      toast.error('Please enter your Register Number')
+      return
+    }
+    if (!REG_NO_PATTERN.test(loginRegNo)) {
+      toast.error('Register Number must be 4-20 alphanumeric characters')
       return
     }
 
@@ -44,9 +57,11 @@ const Login = ({ setToken }) => {
         
         // Save to localStorage
         localStorage.setItem('authToken', token)
+        localStorage.setItem('userId', user.id)
         localStorage.setItem('userRole', user.role)
         localStorage.setItem('userName', user.name)
         localStorage.setItem('userEmail', user.email)
+        localStorage.setItem('userRegisterNo', loginRegNo.toUpperCase())
 
         toast.success(`Welcome back, ${user.name}!`)
         
@@ -158,6 +173,23 @@ const Login = ({ setToken }) => {
             </div>
 
             <div>
+              <label className="block text-sm font-semibold text-gray-300 mb-2">Register Number</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
+                  <FaIdCard />
+                </div>
+                <input
+                  type="text"
+                  value={registerNo}
+                  onChange={(e) => setRegisterNo(e.target.value.toUpperCase())}
+                  placeholder="e.g. URK25CS7036"
+                  className="input pl-10 uppercase"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
               <label className="block text-sm font-semibold text-gray-300 mb-2">Phone Number (Optional)</label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
@@ -244,6 +276,23 @@ const Login = ({ setToken }) => {
               </div>
 
               <div>
+                <label className="block text-sm font-semibold text-gray-300 mb-2">Register Number</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
+                    <FaIdCard />
+                  </div>
+                  <input
+                    type="text"
+                    value={registerNo}
+                    onChange={(e) => setRegisterNo(e.target.value.toUpperCase())}
+                    placeholder="e.g. URK25CS7036"
+                    className="input pl-10 uppercase"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
                 <label className="block text-sm font-semibold text-gray-300 mb-2">Password</label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
@@ -298,7 +347,7 @@ const Login = ({ setToken }) => {
             <div className="grid grid-cols-3 gap-3">
               <button
                 type="button"
-                onClick={() => handleLogin(null, 'andrea.susanna07@gmail.com', 'password')}
+                onClick={() => handleLogin(null, 'andrea.susanna07@gmail.com', 'password', 'DEMO001')}
                 disabled={loading}
                 className="flex flex-col items-center p-2.5 bg-dark-700 hover:bg-dark-600 border border-dark-600 hover:border-blue-500/30 rounded-xl transition-all text-[11px] text-gray-300"
               >
@@ -309,7 +358,7 @@ const Login = ({ setToken }) => {
 
               <button
                 type="button"
-                onClick={() => handleLogin(null, 'smith@echo.campus', 'password')}
+                onClick={() => handleLogin(null, 'smith@echo.campus', 'password', 'DEMO002')}
                 disabled={loading}
                 className="flex flex-col items-center p-2.5 bg-dark-700 hover:bg-dark-600 border border-dark-600 hover:border-purple-500/30 rounded-xl transition-all text-[11px] text-gray-300"
               >
@@ -320,7 +369,7 @@ const Login = ({ setToken }) => {
 
               <button
                 type="button"
-                onClick={() => handleLogin(null, 'admin@echo.campus', 'password')}
+                onClick={() => handleLogin(null, 'admin@echo.campus', 'password', 'DEMO003')}
                 disabled={loading}
                 className="flex flex-col items-center p-2.5 bg-dark-700 hover:bg-dark-600 border border-dark-600 hover:border-red-500/30 rounded-xl transition-all text-[11px] text-gray-300"
               >

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react'
+import React, { createContext, useContext, useState, useCallback, useEffect, useRef } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
@@ -11,6 +11,8 @@ export const AlertProvider = ({ children }) => {
   const [notifications, setNotifications] = useState([])
   const [emergencyContacts, setEmergencyContacts] = useState([])
   const [ws, setWs] = useState(null)
+  const wsRef = useRef(null)
+  const shouldReconnectRef = useRef(true)
 
   // Fetch all emergency contacts
   const fetchContacts = useCallback(async () => {
@@ -301,9 +303,12 @@ export const AlertProvider = ({ children }) => {
       
       socket.onclose = () => {
         console.log("WebSocket disconnected. Retrying in 5 seconds...")
-        setTimeout(() => connectWebSocket(userId), 5000)
+        if (shouldReconnectRef.current) {
+          setTimeout(() => connectWebSocket(userId), 5000)
+        }
       }
-      
+
+      wsRef.current = socket
       setWs(socket)
     } catch (e) {
       console.error("WebSocket setup failed:", e)
@@ -324,7 +329,11 @@ export const AlertProvider = ({ children }) => {
     }
     
     return () => {
-      if (ws) ws.close()
+      shouldReconnectRef.current = false
+      if (wsRef.current) {
+        wsRef.current.close()
+        wsRef.current = null
+      }
     }
   }, [fetchContacts, fetchAlertHistory, connectWebSocket])
 
